@@ -159,24 +159,13 @@ def console_listener():
             print("[INFO] Неизвестная команда. Доступны: 'check', 'exit'")
 
 def main():
-    print("[INFO] Бот запущен! Инициализирую первую проверку...")
+    print("[INFO] Бот запущен по расписанию Render Cron...")
     
-    # 1. Проверяем скидки прямо при запуске
+    # Просто один раз проверяем скидки
     check_deals()
     
-    # 2. Настраиваем проверку каждый ровный час (:00 минут)
-    schedule.every().hour.at(":00").do(check_deals)
-    
-    # 3. Запускаем отдельный поток для прослушивания консоли (чтобы input() не блокировал таймер)
-    listener_thread = threading.Thread(target=console_listener, daemon=True)
-    listener_thread.start()
-    
-    print("[INFO] Ожидание по расписанию... (Введи 'check' для ручного запуска)")
-    
-    # Бесконечный цикл, в котором крутится планировщик
-    while True:
-        schedule.run_pending()
-        time.sleep(1) # Спим 1 секунду, чтобы не грузить процессор
+    print("[INFO] Проверка завершена. Выключаюсь до следующего запуска.")
+    # Цикл while True, schedule и listener_thread полностью удаляем!
 
 if __name__ == "__main__":
     main()
